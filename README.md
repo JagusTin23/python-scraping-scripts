@@ -2,9 +2,9 @@
 A repository for scraping scripts using Python.  
 
 ===
-# Scrip Info:  
+# ScripT Info  
 
-## scrapeYelp.py  
+## scrapeYelp.py:  
 Tested on Python 3.5.1  
 Dependencies: bs4 4.4.1, pandas 0.18.0   
 
