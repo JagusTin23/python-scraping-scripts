@@ -1,2 +1,2 @@
 # python-scraping-scripts
-A repository for scrapping scripts 
+A repository for scraping scripts 
