@@ -2,7 +2,7 @@
 A repository for scraping scripts using Python.  
 
 ===
-# ScripT Info  
+# Script Info  
 
 ## scrapeYelp.py:  
 Tested on Python 3.5.1  
