@@ -44,7 +44,7 @@ def scrape_yelp(link):
     
     rating_lst = [] 
     
-    # Obtain numeric value from parsed rating.
+    # Obtain numeric value from parsed ratings.
     # Appends rating_lst with rating value of type float.  
     for rating in ratings:
         rating = float(re.findall('[0-9].[0-9]', str(rating))[0])
@@ -74,17 +74,19 @@ for rating, review in main_business_review_rating:
     all_ratings.append(rating)
     all_reviews.append(review)
 
-# Scraping additional business's reviews.  
+# Scraping additional reviews pages if review count exceeds 20.  
 # Yelp returns a max of 20 reviews per page.  
 # Url is modified by adding ?start=20 to main url & increase number by 20.  
 # Ranges from 20 to review count.  
-for number in range(20, review_count, 20):   
-    new_url = business_url+"?start="+str(number)
-    review_rating = scrape_yelp(new_url)
-    
-    for rating, review in review_rating:
-        all_ratings.append(rating)
-        all_reviews.append(review)
+
+if review_count > 20:
+    for number in range(20, review_count, 20):   
+        new_url = business_url+"?start="+str(number)
+        review_rating = scrape_yelp(new_url)
+        
+        for rating, review in review_rating:
+            all_ratings.append(rating)
+            all_reviews.append(review)
 
 # Verify total review/rating are equal.  
 print("Total number of reviews:", str(len(all_reviews)))
