@@ -34,15 +34,14 @@ def scrape_yelp(link):
     ratings = soup.find_all('meta', itemprop = "ratingValue")
     ratings = ratings[1:len(ratings)] # Position 0 is business overall rating.  
     
-    review_lst = []  
+    review_lst = []
+    rating_lst = []
     
     # Remove HTML tags from parsed reviews.  
     # Appends review_lst with plain text.  
     for review in reviews: 
         review = BeautifulSoup(str(review), 'lxml').get_text()
         review_lst.append(review)
-    
-    rating_lst = [] 
     
     # Obtain numeric value from parsed ratings.
     # Appends rating_lst with rating value of type float.  
