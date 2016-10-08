@@ -60,7 +60,7 @@ business_review_rating = scrape_yelp(business_url)
 # Url is modified by adding ?start=20 to main url & increase number by 20.  
 # Ranges from 20 to review count.  
 
-if review_count > 21:
+if review_count > 20:
     for number in range(20, review_count, 20):   
         new_url = business_url+"?start="+str(number)
         review_rating = scrape_yelp(new_url)
