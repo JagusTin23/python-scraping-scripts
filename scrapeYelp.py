@@ -24,7 +24,7 @@ def get_review_count(link):
 
 
 # Performs scraping. 
-# Returns tuple of rating and text per customer review.  
+# Returns tuple of list for rating and text per customer review.  
 def scrape_yelp(link):
     site = urllib.request.urlopen(link)
     
@@ -58,14 +58,15 @@ business_review_rating = scrape_yelp(business_url)
 # Scraping additional reviews pages if review count exceeds 20.  
 # Yelp returns a max of 20 reviews per page.  
 # Url is modified by adding ?start=20 to main url & increase number by 20.  
-# Ranges from 20 to review count.  
+# Ranges from 20 to review count.
+# Appends bussiness_review_rating with additional data  
 
 if review_count > 20:
     for number in range(20, review_count, 20):   
         new_url = business_url+"?start="+str(number)
-        review_rating = scrape_yelp(new_url)
-        business_review_rating[0].extend(review_rating[0])
-        business_review_rating[1].extend(review_rating[1])
+        add_review_rating = scrape_yelp(new_url)
+        business_review_rating[0].extend(add_review_rating[0])
+        business_review_rating[1].extend(add_review_rating[1])
 
 
 # Verify total review/rating are equal.  
