@@ -34,65 +34,47 @@ def scrape_yelp(link):
     ratings = soup.find_all('meta', itemprop = "ratingValue")
     ratings = ratings[1:len(ratings)] # Position 0 is business overall rating.  
     
-    review_lst = []
-    rating_lst = []
+    # List of text with HTML and markup tags removed.   
+    revs = [BeautifulSoup(str(review), 'lxml').get_text() for review in reviews]
     
-    # Remove HTML tags from parsed reviews.  
-    # Appends review_lst with plain text.  
-    for review in reviews: 
-        review = BeautifulSoup(str(review), 'lxml').get_text()
-        review_lst.append(review)
-    
-    # Obtain numeric value from parsed ratings.
-    # Appends rating_lst with rating value of type float.  
-    for rating in ratings:
-        rating = float(re.findall('[0-9].[0-9]', str(rating))[0])
-        rating_lst.append(rating)
+    # List of rating values of type float.  
+    rts = [float(re.findall('[0-9].[0-9]', str(rate))[0]) for rate in ratings]
     
     site.close()
     
-    return(zip(rating_lst, review_lst))
+    return(rts, revs)
 
 # Obtaining business url from command line.  
 business_url = sys.argv[1]
 
-# Retrieve total number of reviews.  
+# Retrieve total number of reviews.     
 review_count = get_review_count(business_url)
-
-# To appdend with scrape_yelp output.  
-all_ratings = []
-all_reviews = []
 
 print("Scraping Yelp business:", business_url)
 
 # Scraping business main page.  
-main_business_review_rating = scrape_yelp(business_url)
-
-# Appending all_reviews and all_ratings w/ main page reviews and ratings.  
-for rating, review in main_business_review_rating:
-    all_ratings.append(rating)
-    all_reviews.append(review)
+business_review_rating = scrape_yelp(business_url)
 
 # Scraping additional reviews pages if review count exceeds 20.  
 # Yelp returns a max of 20 reviews per page.  
 # Url is modified by adding ?start=20 to main url & increase number by 20.  
 # Ranges from 20 to review count.  
 
-if review_count > 20:
+if review_count > 21:
     for number in range(20, review_count, 20):   
         new_url = business_url+"?start="+str(number)
         review_rating = scrape_yelp(new_url)
-        
-        for rating, review in review_rating:
-            all_ratings.append(rating)
-            all_reviews.append(review)
+        business_review_rating[0].extend(review_rating[0])
+        business_review_rating[1].extend(review_rating[1])
+
 
 # Verify total review/rating are equal.  
-print("Total number of reviews:", str(len(all_reviews)))
-print("Total number of ratings:", str(len(all_ratings)))
+print("Total number of ratings:", str(len(business_review_rating[0])))
+print("Total number of reviews:", str(len(business_review_rating[1])))
 
 # Create pandas data frame with rating and review as columns.  
-review_data = pd.DataFrame({'rating': all_ratings, 'review': all_reviews})
+review_data = pd.DataFrame({'rating': business_review_rating[0], 
+    'review': business_review_rating[1]})
 
 # Create path and extension for output file.  
 output_file_path = './'+sys.argv[2]+'.csv'
