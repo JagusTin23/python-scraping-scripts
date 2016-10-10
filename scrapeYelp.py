@@ -5,9 +5,11 @@
 
 import sys
 import re
+import time
 import urllib.request
 import pandas as pd
 from bs4 import BeautifulSoup
+
 
 # Verifies number of arguments in command line is correct.  
 if len(sys.argv) != 3:
@@ -24,7 +26,7 @@ def get_review_count(link):
 
 
 # Performs scraping. 
-# Returns tuple of list for rating and text per customer review.  
+# Returns tuple containing lists of ratings and text for all reviews in a url.  
 def scrape_yelp(link):
     site = urllib.request.urlopen(link)
     
@@ -44,13 +46,14 @@ def scrape_yelp(link):
     
     return(rts, revs)
 
+
 # Obtaining business url from command line.  
 business_url = sys.argv[1]
 
 # Retrieve total number of reviews.     
 review_count = get_review_count(business_url)
 
-print("Scraping Yelp business:", business_url)
+print("Scraping", review_count, "from Yelp business url:\n", "   "+business_url)
 
 # Scraping business main page.  
 business_review_rating = scrape_yelp(business_url)
@@ -59,7 +62,7 @@ business_review_rating = scrape_yelp(business_url)
 # Yelp returns a max of 20 reviews per page.  
 # Url is modified by adding ?start=20 to main url & increase number by 20.  
 # Ranges from 20 to review count.
-# Appends bussiness_review_rating with additional data  
+# Extends bussiness_review_rating with additional data  
 
 if review_count > 20:
     for number in range(20, review_count, 20):   
@@ -69,7 +72,7 @@ if review_count > 20:
         business_review_rating[1].extend(add_review_rating[1])
 
 
-# Verify total review/rating are equal.  
+# Confirms number review of rating.  
 print("Total number of ratings:", str(len(business_review_rating[0])))
 print("Total number of reviews:", str(len(business_review_rating[1])))
 
