@@ -19,7 +19,7 @@ if len(sys.argv) != 3:
 def get_review_count(link):
     site = urllib.request.urlopen(link)
     soup = BeautifulSoup(site, 'lxml')
-    rev_count = str(soup.find('span', itemprop = 'reviewCount'))
+    rev_count = str(soup.find('span', class_ = "tab-link_count"))
     rev_count = re.findall(r'\d+', rev_count)[0]
     site.close()
     return(int(rev_count))
@@ -50,7 +50,7 @@ def scrape_yelp(link):
 # Obtaining business url from command line.  
 business_url = sys.argv[1]
 
-# Retrieve total number of reviews.     
+# Retrieve total number of reviews in the English language.     
 review_count = get_review_count(business_url)
 
 print("Scraping", review_count, "from Yelp business url:\n", "   "+business_url)
