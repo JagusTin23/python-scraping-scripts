@@ -72,7 +72,7 @@ if review_count > 20:
         business_review_rating[1].extend(add_review_rating[1])
 
 
-# Confirms number review of rating.  
+# Confirms number of reviews and ratings.  
 print("Total number of ratings:", str(len(business_review_rating[0])))
 print("Total number of reviews:", str(len(business_review_rating[1])))
 
