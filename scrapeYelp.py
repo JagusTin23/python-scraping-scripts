@@ -85,6 +85,5 @@ with open(output_file_path, 'w') as f:
     for rt, rev in zip(business_review_rating[0], business_review_rating[1]):
         writer.writerow([rt, rev])
 
-
 print('Copied file:', output_file_path)
 
