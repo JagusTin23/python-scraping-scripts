@@ -5,9 +5,8 @@
 
 import sys
 import re
-import time
+import csv
 import urllib.request
-import pandas as pd
 from bs4 import BeautifulSoup
 
 
@@ -76,15 +75,18 @@ if review_count > 20:
 print("Total number of ratings:", str(len(business_review_rating[0])))
 print("Total number of reviews:", str(len(business_review_rating[1])))
 
-# Create pandas data frame with rating and review as columns.  
-review_data = pd.DataFrame({'rating': business_review_rating[0], 
-    'review': business_review_rating[1]})
-
 # Create path and extension for output file.  
 output_file_path = './'+sys.argv[2]+'.csv'
 
-# Output data to csv formatted file.  
-review_data.to_csv(output_file_path, index=False)
+# Writes to csv formated file.    
+with open(output_file_path, 'w') as f:   
+    # Configures writer to write standard csv file.  
+    writer = csv.writer(f, delimiter=',', quotechar='"')
+    writer.writerow(['rating', 'review'])
+    for rt, rev in zip(business_review_rating[0], business_review_rating[1]):
+        # Writes ratings and reviews to file.  
+        writer.writerow([rt, rev])
+
 
 print('Copied file:', output_file_path)
 
