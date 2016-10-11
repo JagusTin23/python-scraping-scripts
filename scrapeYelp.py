@@ -61,7 +61,7 @@ business_review_rating = scrape_yelp(business_url)
 # Yelp returns a max of 20 reviews per page.  
 # Url is modified by adding ?start=20 to main url & increase number by 20.  
 # Ranges from 20 to review count.
-# Extends bussiness_review_rating with additional data  
+# Extends bussiness_review_rating with additional data.  
 
 if review_count > 20:
     for number in range(20, review_count, 20):   
@@ -70,7 +70,6 @@ if review_count > 20:
         business_review_rating[0].extend(add_review_rating[0])
         business_review_rating[1].extend(add_review_rating[1])
 
-
 # Confirms number of reviews and ratings.  
 print("Total number of ratings:", str(len(business_review_rating[0])))
 print("Total number of reviews:", str(len(business_review_rating[1])))
@@ -78,13 +77,12 @@ print("Total number of reviews:", str(len(business_review_rating[1])))
 # Create path and extension for output file.  
 output_file_path = './'+sys.argv[2]+'.csv'
 
-# Writes to csv formated file.    
 with open(output_file_path, 'w') as f:   
     # Configures writer to write standard csv file.  
     writer = csv.writer(f, delimiter=',', quotechar='"')
     writer.writerow(['rating', 'review'])
+    # Writing rating and reviews to file.  
     for rt, rev in zip(business_review_rating[0], business_review_rating[1]):
-        # Writes ratings and reviews to file.  
         writer.writerow([rt, rev])
 
 
