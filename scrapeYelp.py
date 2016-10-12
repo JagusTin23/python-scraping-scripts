@@ -86,4 +86,3 @@ with open(output_file_path, 'w') as f:
         writer.writerow([rt, rev])
 
 print('Copied file:', output_file_path)
-print('hello')
