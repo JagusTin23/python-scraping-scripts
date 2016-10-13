@@ -1,6 +1,6 @@
-# This script scrapes customer reviews and rating for a business in Yelp.  
-# Copies a csv file to the current working directory.  
-# Command line args: business Yelp url & name for output file w/o extension.  
+# This script is used to update a csv file with Yelp reviews.  
+# Appends an existing csv file containing review data.
+# Command line args: business main Yelp url & name of file to be updated. 
 # Built on Python 3.5.1
 
 
@@ -87,4 +87,4 @@ with open(file_to_update, 'a') as outCSV:
     for ratg, rev in zip(missing_ratgs, missing_revs):
         writer.writerow([ratg, rev])
   
-print('Updated completed.')
+print('Update completed.')
