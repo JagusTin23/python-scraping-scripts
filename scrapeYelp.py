@@ -75,8 +75,9 @@ print("Total number of reviews:", str(len(business_review_rating[1])))
 output_file_path = './'+sys.argv[2]+'.csv'
 
 # Create a panda dataframe with review data.
-review_data = pd.DataFrame({'ratings': business_review_rating[0],
-    'reviews': business_review_rating[1]})
+# Reversed order, oldest reviews first. 
+review_data = pd.DataFrame({'ratings': business_review_rating[0][::-1],
+    'reviews': business_review_rating[1][::-1]})
 
 # Export csv file.  
 review_data.to_csv(output_file_path, index = False, quoting = csv.QUOTE_NONNUMERIC)
