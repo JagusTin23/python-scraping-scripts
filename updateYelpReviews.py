@@ -3,7 +3,6 @@
 # Command line args: business main Yelp url & name of file to be updated. 
 # Built on Python 3.5.1
 
-
 import sys
 import re
 import csv
@@ -23,7 +22,6 @@ def get_review_count(link):
         rev_count = re.findall(r'\d+', rev_count)[0]
     return(int(rev_count))
 
-
 # Performs scraping. 
 # Returns tuple containing lists of ratings and text for all reviews in a url.   
 def scrape_yelp(link):
@@ -42,7 +40,6 @@ def scrape_yelp(link):
         rts = [int(re.findall('[0-9]', str(_))[0]) for _ in ratings]
     
     return(rts, revs)
-
 
 business_url = sys.argv[1]
 file_to_update = sys.argv[2]
