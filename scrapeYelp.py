@@ -7,6 +7,7 @@ import sys
 import re
 import csv
 import urllib.request
+import pandas as pd
 from bs4 import BeautifulSoup
 
 
@@ -16,32 +17,28 @@ if len(sys.argv) != 3:
 
 # Retrieves number of reviews in English for a business in Yelp.  
 def get_review_count(link):
-    site = urllib.request.urlopen(link)
-    soup = BeautifulSoup(site, 'lxml')
-    rev_count = str(soup.find('span', class_ = "tab-link_count"))
-    rev_count = re.findall(r'\d+', rev_count)[0]
-    site.close()
+    with urllib.request.urlopen(link) as site:
+        soup = BeautifulSoup(site, 'lxml')
+        rev_count = str(soup.find('span', class_ = "tab-link_count"))
+        rev_count = re.findall(r'\d+', rev_count)[0]
     return(int(rev_count))
 
 
 # Performs scraping. 
 # Returns tuple containing lists of ratings and text for all reviews in a url.  
 def scrape_yelp(link):
-    site = urllib.request.urlopen(link)
-    
-    # Parsing site for reveiws and rating.  
-    soup = BeautifulSoup(site, "lxml")
-    reviews = soup.find_all('p', itemprop = "description")
-    ratings = soup.find_all('meta', itemprop = "ratingValue")
-    ratings = ratings[1:len(ratings)] # Position 0 is business overall rating.  
-    
-    # List of text with HTML and markup tags removed.   
-    revs = [BeautifulSoup(str(review), 'lxml').get_text() for review in reviews]
-    
-    # List of rating values of type float.  
-    rts = [float(re.findall('[0-9].[0-9]', str(rate))[0]) for rate in ratings]
-    
-    site.close()
+    with urllib.request.urlopen(link) as site:
+        # Parsing site for reveiws and rating.  
+        soup = BeautifulSoup(site, "lxml")
+        reviews = soup.find_all('p', itemprop = "description")
+        ratings = soup.find_all('meta', itemprop = "ratingValue")
+        ratings = ratings[1:len(ratings)] # Position 0 is business overall rating.  
+        
+        # List of text with HTML and markup tags removed.   
+        revs = [BeautifulSoup(str(_), 'lxml').get_text() for _ in reviews]
+        
+        # List of rating values of type integer.  
+        rts = [int(re.findall('[0-9]', str(_))[0]) for _ in ratings]
     
     return(rts, revs)
 
@@ -77,12 +74,11 @@ print("Total number of reviews:", str(len(business_review_rating[1])))
 # Create path and extension for output file.  
 output_file_path = './'+sys.argv[2]+'.csv'
 
-with open(output_file_path, 'w') as f:   
-    # Configures writer to write standard csv file.  
-    writer = csv.writer(f, delimiter=',', quotechar='"')
-    writer.writerow(['rating', 'review'])
-    # Writing rating and reviews to file.  
-    for rt, rev in zip(business_review_rating[0], business_review_rating[1]):
-        writer.writerow([rt, rev])
+# Create a panda dataframe with review data.
+review_data = pd.DataFrame({'ratings': business_review_rating[0],
+    'reviews': business_review_rating[1]})
+
+# Export csv file.  
+review_data.to_csv(output_file_path, index = False, quoting = csv.QUOTE_NONNUMERIC)
 
 print('Copied file:', output_file_path)
