@@ -58,7 +58,7 @@ business_review_rating = scrape_yelp(business_url)
 # Yelp returns a max of 20 reviews per page.  
 # Url is modified by adding ?start=20 to main url & increase number by 20.  
 # Ranges from 20 to review count.
-# Extends bussiness_review_rating with additional data.  
+# Extends business_review_rating with additional data.  
 
 if review_count > 20:
     for number in range(20, review_count, 20):   
