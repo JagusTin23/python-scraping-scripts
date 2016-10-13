@@ -60,7 +60,7 @@ if revsInFile < review_count:
     business_review_rating = scrape_yelp(business_url)
     
     # Yelp restricts 20 reveiws per url.   
-    # If reviews needed > than 20, then ?start=20 is added to url.  
+    # If reviews needed exceeds 20, then ?start=20 is added to url.  
     # Number is increased by 20 until all reviews are retrieved.   
     if revs_needed > 20:
 
