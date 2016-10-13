@@ -26,16 +26,13 @@ def get_review_count(link):
 # Returns tuple containing lists of ratings and text for all reviews in a url.   
 def scrape_yelp(link):
     with urllib.request.urlopen(link) as site:
-    
         # Parsing site for reveiws and rating.  
         soup = BeautifulSoup(site, 'lxml')
         reviews = soup.find_all('p', itemprop = 'description')
         ratings = soup.find_all('meta', itemprop = 'ratingValue')
         ratings = ratings[1:len(ratings)] # Position 0 is business rating.  
-        
         # List of text with HTML and markup tags removed.   
         revs = [BeautifulSoup(str(_), 'lxml').get_text() for _ in reviews]
-        
         # List of rating values of type int.  
         rts = [int(re.findall('[0-9]', str(_))[0]) for _ in ratings]
     return(rts, revs)

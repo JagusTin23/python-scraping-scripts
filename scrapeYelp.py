@@ -23,7 +23,6 @@ def get_review_count(link):
         rev_count = re.findall(r'\d+', rev_count)[0]
     return(int(rev_count))
 
-
 # Performs scraping. 
 # Returns tuple containing lists of ratings and text for all reviews in a url.  
 def scrape_yelp(link):
@@ -32,16 +31,12 @@ def scrape_yelp(link):
         soup = BeautifulSoup(site, "lxml")
         reviews = soup.find_all('p', itemprop = "description")
         ratings = soup.find_all('meta', itemprop = "ratingValue")
-        ratings = ratings[1:len(ratings)] # Position 0 is business overall rating.  
-        
+        ratings = ratings[1:len(ratings)] # Position 0 is overall rating.  
         # List of text with HTML and markup tags removed.   
         revs = [BeautifulSoup(str(_), 'lxml').get_text() for _ in reviews]
-        
         # List of rating values of type integer.  
         rts = [int(re.findall('[0-9]', str(_))[0]) for _ in ratings]
-    
     return(rts, revs)
-
 
 # Obtaining business url from command line.  
 business_url = sys.argv[1]
