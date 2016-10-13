@@ -38,7 +38,6 @@ def scrape_yelp(link):
         
         # List of rating values of type int.  
         rts = [int(re.findall('[0-9]', str(_))[0]) for _ in ratings]
-    
     return(rts, revs)
 
 business_url = sys.argv[1]
