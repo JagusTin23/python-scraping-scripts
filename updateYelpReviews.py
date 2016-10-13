@@ -1,5 +1,5 @@
-# This script is used to update a csv file with Yelp reviews.  
-# Appends an existing csv file containing review data.
+# Appends an existing csv file with Yelp review data.
+# Is meant to be used on a file that was created using scrapeYelp.py
 # Command line args: business main Yelp url & name of file to be updated. 
 # Built on Python 3.5.1
 
@@ -51,15 +51,17 @@ if revsInFile == review_count:
 # Scrapping additional reviews if needed.  
 if revsInFile < review_count:
     
-    # If number of reviews needed is greater than 20, then multiple urls 
-    # are to be scraped. 
+    # Number of reviews to be updated.  
     revs_needed = review_count - revsInFile
     
     print('Scraping', revs_needed, 'reviews...')
 
     # Scraping main page. 
     business_review_rating = scrape_yelp(business_url)
-
+    
+    # Yelp restricts 20 reveiws per url.   
+    # If reviews needed > than 20, then ?start=20 is added URL.  
+    # Number is increased by 20 until all reviews are retrieve.   
     if revs_needed > 20:
 
         for number in range(20, revs_needed + 1, 20):   
