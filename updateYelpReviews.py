@@ -10,7 +10,6 @@ import urllib.request
 from bs4 import BeautifulSoup
 
 # Verifies number of arguments in command line is correct.  
-
 if len(sys.argv) != 3:
     sys.exit('Incorrect number of arguments passed in command line.')
 
