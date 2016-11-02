@@ -1,5 +1,5 @@
-# python-scraping-scripts
-A repository for scraping scripts using Python.  
+# Python Scraping Scripts
+A repository for scraping scripts using Python.  This is part of an ongoing project to develop tools for text analytics on major online crowd-sourced business reviews platforms (Yelp, TripAdvisor, Google +, etc).
 
 ===
 # Script Info  
